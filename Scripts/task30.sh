@@ -1,0 +1,32 @@
+i#!/bin/bash
+
+[[ $# -eq 1 ]] || { echo "Invalid number of arguments!"; exit 1;}
+
+LOGDIR="${1}"
+
+if [[ ! -d ${LOGDIR} ]];then
+	echo "Invalid directory name!"
+	exit 2
+elif [[ ! -r ${LOGDIR} ]];then
+	echo "Directory not readable!"
+	exit 2
+fi
+
+RECORDS=$(mktemp)
+
+while read FRIEND; do
+
+  LINES="$(find "${LOGDIR}" -mindepth 4 -maxdepth 4 -type f \
+    | egrep "$FRIEND" \
+    | xargs -I {} wc -l {} \
+    | awk '{print $1}' \
+    | awk '{sum += $1}END{print sum}')"
+
+  echo "$LINES $FRIEND" >> "${RECORDS}"
+
+done < <(find "${LOGDIR}" -mindepth 3 -maxdepth 3 -type d \
+        | cut -d '/' -f 4 | sort | uniq)
+
+cat "${RECORDS}" | sort -rn -k1 | head
+
+rm "${RECORDS}"
