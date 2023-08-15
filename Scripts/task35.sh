@@ -14,7 +14,7 @@ fi
 
 [[ $(find "${DIR1}" -mindepth 1 | wc -l) -ne 0]] || {echo "Directory is empty!"; exit 4}
 
-hashes="${DIR}/hash.txt"
+hashes="${DIR1}/hash.txt"
 tmp="$(mktemp)"
 
 touch "$hashes"
