@@ -12,7 +12,7 @@ elif [[ ! -r "${DIR!}" ]];then
 	exit 3
 fi
 
-[[ $(find "${DIR!}" -mindepth 1 | wc -l) -ne 0]] || {echo "Directory is empty!"; exit 4}
+[[ $(find "${DIR1}" -mindepth 1 | wc -l) -ne 0]] || {echo "Directory is empty!"; exit 4}
 
 hashes="${DIR}/hash.txt"
 tmp="$(mktemp)"
